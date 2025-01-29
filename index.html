@@ -253,7 +253,7 @@
     <p id="transcript"></p>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-        const socket = io("http://127.0.0.1:5000", {transports: ["websocket", "polling"]}); // Connexion WebSocket
+        const socket = io("homelinks-ai-production.up.railway.app:5000", {transports: ["websocket", "polling"]}); // Connexion WebSocket
 
         socket.on("connect", () => {
         console.log("WebSocket connecté !");
