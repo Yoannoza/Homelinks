@@ -253,7 +253,7 @@
     <p id="transcript"></p>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-        const socket = io("https://homelinks-ai-production.up.railway.app:5000", {transports: ["websocket", "polling"]}); // Connexion WebSocket
+        const socket = io("https://homelinks-ai-production.up.railway.app", {transports: ["websocket", "polling"]}); // Connexion WebSocket
 
         socket.on("connect", () => {
         console.log("WebSocket connecté !");
@@ -267,7 +267,7 @@
         // Quand le serveur informe que l'audio est prêt
         socket.on("audio_ready", (data) => {
             console.log("Audio prêt :", data.url);
-            const audio = new Audio(`http://localhost:5000/audio`);
+            const audio = new Audio(`https://homelinks-ai-production.up.railway.app/audio`);
             audio.play(); 
         });
 
@@ -349,7 +349,7 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const apiBaseUrl = 'http://localhost:5000'; // Remplacez par l'adresse IP de votre ESP32
+            const apiBaseUrl = 'https://homelinks-ai-production.up.railway.app'; // Remplacez par l'adresse IP de votre ESP32
         
             // Fonction pour envoyer des requêtes POST à l'ESP32
             function sendRequest(endpoint, data) {
@@ -512,7 +512,7 @@
             const formData = new FormData();
             formData.append('audio', blob);
 
-            fetch('http://localhost:5000/transcribe', {
+            fetch('https://homelinks-ai-production.up.railway.app/transcribe', {
                 method: 'POST',
                 body: formData
             })
@@ -524,7 +524,7 @@
         function handleTranscription(transcription) {
             let states = get_State();
             let all_states = get_All_State();
-            fetch('http://localhost:5000/process', {
+            fetch('https://homelinks-ai-production.up.railway.app/process', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
