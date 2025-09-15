@@ -471,7 +471,7 @@
                     console.log(`${room} light ${state}`);
                 }
             };
-            xhttp.open("GET", "http://127.0.0.1:5500/" + checkbox.id + "/" + state, true);
+            xhttp.open("GET", "http://34.134.18.88:5000/" + checkbox.id + "/" + state, true);
             xhttp.send();
         }
 
@@ -838,7 +838,7 @@
             status.style.color = 'var(--accent-color)';
             
             // Send to server if needed
-            fetch('http://127.0.0.1:5500/set-alarm', {
+            fetch('http://34.134.18.88:5000/set-alarm', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
