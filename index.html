@@ -32,6 +32,10 @@
                     <div class="status-indicators">
                         <span class="status-dot active"></span>
                         <span class="status-text">Système actif</span>
+                        <div class="api-status" id="api-status">
+                            <i class="fas fa-brain"></i>
+                            <span class="api-status-text">Connexion IA...</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -298,8 +302,63 @@
     
     <p id="transcript" style="display: none;"></p>
     <script type="text/javascript" src="js/gauge.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-        // Theme Toggle
+        // 🔗 WebSocket Connection for Real-time Updates
+        const socket = io('http://127.0.0.1:5000');
+        
+        socket.on('connect', () => {
+            console.log('🔗 Connected to Homelinks AI Server');
+            // Update status indicator
+            const statusText = document.querySelector('.status-text');
+            const apiStatus = document.getElementById('api-status');
+            const apiStatusText = document.querySelector('.api-status-text');
+            
+            if (statusText) {
+                statusText.textContent = 'SYSTÈME CONNECTÉ';
+                statusText.style.color = 'var(--neon-lime)';
+            }
+            
+            if (apiStatus && apiStatusText) {
+                apiStatus.className = 'api-status connected';
+                apiStatusText.textContent = 'IA Connectée';
+            }
+        });
+        
+        socket.on('audio_ready', (data) => {
+            console.log('🎵 Audio response ready:', data.url);
+            // Auto-play réponse audio via WebSocket
+            fetch(`http://127.0.0.1:5000${data.url}`)
+                .then(response => response.blob())
+                .then(audioBlob => {
+                    const audio = new Audio(URL.createObjectURL(audioBlob));
+                    audio.play();
+                })
+                .catch(err => {
+                    console.log('Fallback to direct audio URL');
+                    const audio = new Audio(`http://127.0.0.1:5000/audio`);
+                    audio.play();
+                });
+        });
+
+        socket.on('disconnect', () => {
+            console.log('❌ Disconnected from AI Server');
+            const statusText = document.querySelector('.status-text');
+            const apiStatus = document.getElementById('api-status');
+            const apiStatusText = document.querySelector('.api-status-text');
+            
+            if (statusText) {
+                statusText.textContent = 'CONNEXION PERDUE';
+                statusText.style.color = 'var(--neon-orange)';
+            }
+            
+            if (apiStatus && apiStatusText) {
+                apiStatus.className = 'api-status error';
+                apiStatusText.textContent = 'IA Déconnectée';
+            }
+        });
+
+        // 🚀 Revolutionary Theme System
         const themeToggle = document.getElementById('theme-switch');
         const body = document.body;
 
@@ -522,94 +581,233 @@
         }
 
         function sendAudioToServer(blob) {
+            console.log('🎵 Sending audio to server, size:', blob.size);
+            
             const formData = new FormData();
-            formData.append('audio', blob);
+            formData.append('audio', blob, 'recording.wav');
         
             fetch('http://127.0.0.1:5000/transcribe', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => handleTranscription(data.transcription));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Transcription failed: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('✅ Transcription received:', data.transcription);
+                handleTranscription(data.transcription);
+            })
+            .catch(error => {
+                console.error('❌ Transcription error:', error);
+                const voiceStatus = document.querySelector('.voice-status');
+                if (voiceStatus) {
+                    voiceStatus.textContent = `Erreur transcription: ${error.message}`;
+                    setTimeout(() => {
+                        voiceStatus.textContent = 'Appuyez pour activer';
+                    }, 3000);
+                }
+            });
         }
 
         function handleTranscription(transcription) {
+            console.log('🎯 Processing transcription:', transcription);
+            
+            // Update voice status
+            const voiceStatus = document.querySelector('.voice-status');
+            if (voiceStatus) {
+                voiceStatus.textContent = `Traitement: "${transcription}"`;
+            }
+            
             let states = get_State();
             let all_states = get_All_State();
+            
             fetch('http://127.0.0.1:5000/process', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ text: transcription, state: states, all_state: all_states})
+                body: JSON.stringify({ 
+                    text: transcription, 
+                    state: states, 
+                    all_state: all_states
+                })
             })
-            .then(response => response.json())
-            .then(data => executeCommands(data.commands));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('🤖 AI Response:', data);
+                
+                // Display assistant response if available
+                if (data.assistant_response) {
+                    if (voiceStatus) {
+                        voiceStatus.textContent = data.assistant_response;
+                        setTimeout(() => {
+                            voiceStatus.textContent = 'Appuyez pour activer';
+                        }, 3000);
+                    }
+                }
+                
+                executeCommands(JSON.stringify(data));
+            })
+            .catch(error => {
+                console.error('❌ API Error:', error);
+                if (voiceStatus) {
+                    voiceStatus.textContent = `Erreur: ${error.message}`;
+                    setTimeout(() => {
+                        voiceStatus.textContent = 'Appuyez pour activer';
+                    }, 3000);
+                }
+            });
         }
 
         function executeCommands(json) {
             const etats = JSON.parse(json);
+            console.log('🎮 Executing commands:', etats);
 
-            if (etats['audio'] == true) {
+            // Handle assistant response (for legacy compatibility)
+            if (etats['assistant_response']) {
+                console.log('🤖 Assistant says:', etats['assistant_response']);
+            }
+
+            // Audio response handling - prioritize WebSocket, fallback to direct
+            if (etats['audio'] == true || !socket.connected) {
+                // Fallback to direct audio fetch if WebSocket not connected
                 const audio = new Audio(`http://127.0.0.1:5000/audio`);
-                audio.play();
+                audio.play().catch(err => {
+                    console.log('Audio playback failed:', err);
+                });
             }
 
+            // Alarm handling
             if (etats['alarm']) {
-                document.getElementById("alarmTime").value = etats['alarm'];
+                const alarmInput = document.getElementById("alarmTime");
+                if (alarmInput) {
+                    alarmInput.value = etats['alarm'];
+                }
             }
 
+            // Door controls with enhanced feedback
             var wrapper1 = document.getElementById('d1');
-            if ((etats['door1']==="on" && wrapper1.classList.contains('open')) || (etats['door1']==="off" && !wrapper1.classList.contains('open'))){
-                console.log(" ")
-            } else {
-                toggleDoors1();
+            if (wrapper1) {
+                const shouldBeOpen = etats['door1'] === "on";
+                const isCurrentlyOpen = wrapper1.classList.contains('open');
+                
+                if (shouldBeOpen !== isCurrentlyOpen) {
+                    toggleDoors1();
+                    // Visual feedback
+                    wrapper1.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        wrapper1.style.transform = '';
+                    }, 300);
+                }
             }
 
             var wrapper2 = document.getElementById('d2');
-            if ((etats['door2']==="on" && wrapper2.classList.contains('open')) || (etats['door2']==="off" && !wrapper2.classList.contains('open'))){
-                console.log(" ")
-            } else {
-                toggleDoors2();
-            }
-
-            const entries = Object.entries(etats);
-            for (let i = 0; i < entries.length ; i++) {
-                const [id, checked] = entries[i];
-                const checkbox = document.getElementById(id);
-                if (checkbox) {
-                    checkbox.checked = checked;
-                    // Trigger visual updates
-                    if (checkbox.onchange) {
-                        checkbox.onchange();
-                    }
+            if (wrapper2) {
+                const shouldBeOpen = etats['door2'] === "on";
+                const isCurrentlyOpen = wrapper2.classList.contains('open');
+                
+                if (shouldBeOpen !== isCurrentlyOpen) {
+                    toggleDoors2();
+                    // Visual feedback
+                    wrapper2.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        wrapper2.style.transform = '';
+                    }, 300);
                 }
             }
+
+            // Device controls with enhanced visual feedback
+            const deviceIds = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage', 'smoke', 'presence', 'auth'];
+            
+            deviceIds.forEach(id => {
+                if (etats.hasOwnProperty(id)) {
+                    const element = document.getElementById(id);
+                    const card = document.querySelector(`[data-room="${id}"]`) || 
+                               document.querySelector(`#${id}`).closest('.light-card, .sensor-card');
+                    
+                    if (element && element.checked !== etats[id]) {
+                        element.checked = etats[id];
+                        
+                        // Enhanced visual feedback
+                        if (card) {
+                            if (etats[id]) {
+                                card.classList.add('active');
+                                // Pulse effect for activation
+                                card.style.animation = 'lightPulse 0.6s ease-out';
+                            } else {
+                                card.classList.remove('active');
+                            }
+                            
+                            // Reset animation
+                            setTimeout(() => {
+                                card.style.animation = '';
+                            }, 600);
+                        }
+                        
+                        // Trigger change events for API calls
+                        if (element.onchange) {
+                            element.onchange();
+                        }
+                        
+                        // Update status text for lights
+                        const statusElement = card?.querySelector('.light-status');
+                        if (statusElement) {
+                            statusElement.textContent = etats[id] ? 'ALLUMÉ' : 'ÉTEINT';
+                        }
+                    }
+                }
+            });
+            
+            console.log('✅ Commands executed successfully');
         }
 
         function get_All_State() {
             const etats = {};
-            const ids = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage', 'smoke', 'presence', 'auth'];
+            const deviceIds = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage', 'smoke', 'presence', 'auth'];
             
-            ids.forEach(id => {
-                const checkbox = document.getElementById(id);
-                etats[id] = checkbox ? checkbox.checked : false;
+            // Get device states
+            deviceIds.forEach(id => {
+                const element = document.getElementById(id);
+                etats[id] = element ? element.checked : false;
             });
 
-            etats['temp'] = temp;
-            etats['hum'] = hum;
+            // Get sensor data (simulated for now)
+            etats['temp'] = document.querySelector('.sensor-value')?.textContent || "22°C";
+            etats['hum'] = document.querySelectorAll('.sensor-value')[1]?.textContent || "65%";
 
-            var wrapper1 = document.getElementById('d1');
-            etats['door1'] = wrapper1.classList.contains('open') ? "on" : "off";
+            // Get door states
+            const wrapper1 = document.getElementById('d1');
+            etats['door1'] = wrapper1?.classList.contains('open') ? "on" : "off";
 
-            var wrapper2 = document.getElementById('d2');
-            etats['door2'] = wrapper2.classList.contains('open') ? "on" : "off";
+            const wrapper2 = document.getElementById('d2');
+            etats['door2'] = wrapper2?.classList.contains('open') ? "on" : "off";
 
-            etats['time'] = document.getElementById('digital-time').textContent + " " + 
-                           document.getElementById('date-display').textContent;
+            // Get current time in API format: "HH:MM:SS---DDMmmYYYY"
+            const now = new Date();
+            const time = now.toLocaleTimeString('fr-FR', { hour12: false });
+            const day = now.getDate().toString().padStart(2, '0');
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            etats['time'] = `${time}---${day}${month}${year}`;
 
-            let etatsJson = JSON.stringify(etats);
-            return etatsJson.slice(1, -1);
+            // Convert to the string format expected by API
+            const etatsArray = Object.entries(etats).map(([key, value]) => {
+                const formattedValue = typeof value === 'string' ? `"${value}"` : value;
+                return `"${key}": ${formattedValue}`;
+            });
+            
+            return etatsArray.join(', ');
         }
 
         function get_State() {
