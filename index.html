@@ -1,852 +1,733 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homelinks - Votre Maison Connectée</title>
+    <title>Homelinks</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <div class="theme-toggle">
-        <input type="checkbox" id="theme-switch" class="theme-switch-input">
-        <label for="theme-switch" class="theme-switch-label">
-            <i class="fas fa-sun"></i>
-            <i class="fas fa-moon"></i>
-        </label>
-    </div>
+    <div style = " width: 100vw; margin: 0;" class="container">
+        <div style = "height: 100vh; width: 100vw; margin: 0;" class="row">
+            <div class="col-6">
+                <div style=" height: 20%; margin-bottom: 100px; margin-left: 10px" class="row">
+                    <div style = "width: 35%"  class="card">
+                        <h1 style="margin-bottom: 20px" class="fw-700 bree-serif "> Hello, AIOT Guys</h1>
+                        <h3 class="fw-600 noto-serif" style="font-size: 20; ">Homelinks, Votre Maison Connectée</h3>
+                    </div>
+                </div>
+                <div style=" height: 55%; " class="row">
+                    <h3 class="noto-serif" style = "font-weight: 800; color: white; font-size: 38px; margin-left: 40px;" >Lampes </h3>
+                    <div style = "width: 45%"  class="card">
+                        <div style="margin-left: 20px" class="row">
+                            <div  class="col-4">
+                                <input id="salon" type="checkbox" onchange="switchLED(this)"/>
+                                <label class="switch" for="salon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
+                                    <path
+                                    d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+                                    ></path>
+                                </svg>
+                                </label>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Header -->
-        <header class="header-section">
-            <div class="welcome-card glass-card">
-                <div class="welcome-content">
-                    <h1 class="welcome-title">
-                        <i class="fas fa-home"></i>
-                        Bonjour !
-                    </h1>
-                    <p class="welcome-subtitle">Homelinks - Votre Maison Connectée</p>
-                    <div class="status-indicators">
-                        <span class="status-dot active"></span>
-                        <span class="status-text">Système actif</span>
-                        <div class="api-status" id="api-status">
-                            <i class="fas fa-brain"></i>
-                            <span class="api-status-text">Connexion IA...</span>
+                                <h3 style = "font-weight: 800; margin-top: 10px; margin-left: 20px;" class="fs-3 noto-serif">Salon</h3>
+                            </div>
+
+                            <div  class="col-4">
+                                <input id="cuisine" type="checkbox" onchange="switchLED(this)"/>
+                                <label class="switch" for="cuisine">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
+                                    <path
+                                    d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+                                    ></path>
+                                </svg>
+                                </label>
+
+                                <h3 style = "font-weight: 800; margin-top: 10px; margin-left: 10px;" class="fs-3 noto-serif">Cuisine</h3>
+                            </div>
+                            
+                            <div class="col-4">
+                                <input id="chambre" type="checkbox" onchange="switchLED(this)"/>
+                                <label class="switch" for="chambre">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
+                                    <path
+                                    d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+                                    ></path>
+                                </svg>
+                                </label>
+
+                                <h3 style = "font-weight: 800; margin-top: 10px; margin-left: 0px;" class="fs-3 noto-serif">Chambre</h3>
+                            </div>
+
+                            <div style="margin-left: 100px;" class="col-4">
+                                <input id="exterieur" type="checkbox" onchange="switchLED(this)"/>
+                                <label class="switch" for="exterieur">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
+                                    <path
+                                    d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+                                    ></path>
+                                </svg>
+                                </label>
+
+                                <h3 style = "font-weight: 800; margin-top: 10px; margin-left: 0px;" class="fs-3 noto-serif">Extérieur</h3>
+                            </div>
+
+                            <div style="margin-left: 25px;" class="col-4">
+                                <input id="garage" type="checkbox" onchange="switchLED(this)"/>
+                                <label class="switch" for="garage">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="slider">
+                                    <path
+                                    d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C49.7 115.4 16 181.8 16 256c0 132.5 107.5 240 240 240s240-107.5 240-240c0-74.2-33.8-140.6-86.6-184.6c-13.6-11.3-33.8-9.4-45.1 4.1s-9.4 33.8 4.1 45.1c38.9 32.3 63.5 81 63.5 135.4c0 97.2-78.8 176-176 176s-176-78.8-176-176c0-54.4 24.7-103.1 63.5-135.4z"
+                                    ></path>
+                                </svg>
+                                </label>
+
+                                <h3 style = "font-weight: 800; margin-top: 10px; margin-left: 10px;" class="fs-3 noto-serif">Garage</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </header>
-        <!-- Main Content Grid -->
-        <div class="content-grid">
-            <!-- Left Column -->
-            <div class="left-column">
-                <!-- Lighting Control Section -->
-                <section class="control-section">
-                    <div class="section-header">
-                        <i class="fas fa-lightbulb"></i>
-                        <h2>Éclairage</h2>
-                    </div>
-                    <div class="lights-grid">
-                        <div class="light-card glass-card" data-room="salon">
-                            <div class="light-icon">
-                                <i class="fas fa-couch"></i>
-                            </div>
-                            <h3>Salon</h3>
-                            <div class="light-switch">
-                                <input type="checkbox" id="salon" onchange="switchLED(this)">
-                                <label for="salon" class="switch-label">
-                                    <span class="switch-slider"></span>
-                                </label>
-                            </div>
-                        </div>
+                <div style="height: 45%; margin-left: 0px; margin-bottom: 100px" class="row">
+                    <h3 class="noto-serif" style = "font-weight: 800; color: white; font-size: 38px; margin-left: 10px;" >Détecteurs Sensoriels </h3>
+                    <div style = "width: 38%; ;" class="card">
+                        <div class="row text-center">
+                            <div class="col text-center">
+                                <div style="margin-left: 80px; margin-bottom: 10px;" class="containerc">
+                                    <input id="presence" type="checkbox">
+                                     <label class="buttonc" for="presence">
+                                      <span class="icon">
+                                       <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#000000" d="M70.533 100.452c-22.862 27.542-36.27 64.923-37.766 96.702-.9 19.145 9.6 42.616 25.276 61.47 15.674 18.855 36.465 32.678 51.753 35.028 11.256.74 19.522-9.182 25.182-16.5 9.537-12.442 19.204-30.678 29.36-49.014 10.155-18.336 20.77-36.82 33.798-50.467 13.028-13.645 30.24-22.73 49.442-17.89 3.34 1.09 3.565 1.663 12.38 8.788 12.605 10.736 26.244 21.81 41.694 39.33l3.803 3.486 10.238-6.06c-20.92-23.726-38.623-51.403-57.006-76.168-27.153-36.58-54.84-65.76-94.205-69.893-36.138-3.317-74.585 18.428-93.95 41.19zm266.053-2.414c-3.507.063-7.26.632-11.217 1.733-7.08 1.97-14.577 5.722-21.718 11.09l60.545 12.47c-.844-8.415-4.142-15.068-9.524-19.503-4.425-3.646-10.055-5.63-16.6-5.785-.49-.01-.987-.013-1.487-.004zm12.787 33.34l-6.83 15.805 18.148 9.95zm-51.254 21.785c9.177 12.81 18.397 25.33 28.04 36.72 7.273-4.386 14.418-10.424 20.662-18a86.045 86.045 0 0 0 2.713-3.49zm-62.702 23.266c-8.527.283-15.98 4.993-24.262 13.67-29.706 32.65-56.175 92.534-24.877 134.35 11.81 14.805 71.805 33.64 129.122 34.264 38.29 26.563 62.975 62.86 93.86 94.36 18.564-26.89 34.903-54.124 70.025-78.467L459.423 361.2c-26.72 8.057-36.142 26.154-50.656 41.217-18.296-25.715-41.06-49.166-65.555-69.527-17.72-14.73-38.605-25.1-58.11-37.434 2.437-.69-6.538-19.77-7.556-21.99-29.352-7.035-49.364-22.817-62.138-39.367l14.25-11c13.5 17.492 35.288 33.754 73.69 35.933 19.65-2.818 29.578-6.955 35.335-11.704 5.626-4.64 8.615-10.964 12.895-20.618 1.095-6.312-.25-7.85-2.84-10.1-1.95-1.696-5.246-3.2-8.787-4.732l-39.023 23.104-4.886-6.094c-17.46-21.77-31.722-33.02-46.578-45.623-3.633-3.94-7.452-6.648-12.324-6.836a25 25 0 0 0-1.72 0zM109.8 312.53c-20.436 15.367-42.69 27.405-71.017 28.307l2.978 27.315 58.107-18.873c19.65 23.613 32.977 51.093 65.314 68.364 37.673-12.64 57.61-32.233 77.46-50.98-21.403-6.467-42.72-14.485-61.496-24.495l-14.232 34.423z"></path></g></svg>
+                                     </span> 
+                                     </label> 
+                                  </div>
 
-                        <div class="light-card glass-card" data-room="cuisine">
-                            <div class="light-icon">
-                                <i class="fas fa-utensils"></i>
-                            </div>
-                            <h3>Cuisine</h3>
-                            <div class="light-switch">
-                                <input type="checkbox" id="cuisine" onchange="switchLED(this)">
-                                <label for="cuisine" class="switch-label">
-                                    <span class="switch-slider"></span>
-                                </label>
-                            </div>
-                        </div>
+                                  <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 28px; margin-left: 10px;" >Détecteur de Présence
 
-                        <div class="light-card glass-card" data-room="chambre">
-                            <div class="light-icon">
-                                <i class="fas fa-bed"></i>
+                                  </h3>
                             </div>
-                            <h3>Chambre</h3>
-                            <div class="light-switch">
-                                <input type="checkbox" id="chambre" onchange="switchLED(this)">
-                                <label for="chambre" class="switch-label">
-                                    <span class="switch-slider"></span>
-                                </label>
-                            </div>
-                        </div>
 
-                        <div class="light-card glass-card" data-room="exterieur">
-                            <div class="light-icon">
-                                <i class="fas fa-tree"></i>
-                            </div>
-                            <h3>Extérieur</h3>
-                            <div class="light-switch">
-                                <input type="checkbox" id="exterieur" onchange="switchLED(this)">
-                                <label for="exterieur" class="switch-label">
-                                    <span class="switch-slider"></span>
-                                </label>
-                            </div>
-                        </div>
+                            <div class="col">
+                                <div style="margin-left: 80px; margin-bottom: 10px;" class="containerc">
+                                    <input id="smoke" type="checkbox">
+                                     <label class="buttonc" for="smoke">
+                                      <span class="icon">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0284 1.11813C9.69728 1.2952 9.53443 1.61638 9.49957 1.97965C9.48456 2.15538 9.46201 2.32986 9.43136 2.50363C9.3663 2.87248 9.24303 3.3937 9.01205 3.98313C8.5513 5.15891 7.67023 6.58926 5.96985 7.65195C3.57358 9.14956 2.68473 12.5146 3.06456 15.527C3.45234 18.6026 5.20871 21.7903 8.68375 22.9486C9.03 23.0641 9.41163 22.9817 9.67942 22.7337C10.0071 22.4303 10.0238 22.0282 9.94052 21.6223C9.87941 21.3244 9.74999 20.5785 9.74999 19.6875C9.74999 19.3992 9.76332 19.1034 9.79413 18.8068C10.3282 20.031 11.0522 20.9238 11.7758 21.5623C12.8522 22.5121 13.8694 22.8574 14.1722 22.9466C14.402 23.0143 14.6462 23.0185 14.8712 22.9284C17.5283 21.8656 19.2011 20.4232 20.1356 18.7742C21.068 17.1288 21.1993 15.3939 20.9907 13.8648C20.7833 12.3436 20.2354 10.9849 19.7537 10.0215C19.3894 9.29292 19.0534 8.77091 18.8992 8.54242C18.7101 8.26241 18.4637 8.04626 18.1128 8.00636C17.8332 7.97456 17.5531 8.06207 17.3413 8.24739L15.7763 9.61686C15.9107 7.44482 15.1466 5.61996 14.1982 4.24472C13.5095 3.24609 12.7237 2.47913 12.1151 1.96354C11.8094 1.70448 11.5443 1.50549 11.3525 1.36923C11.2564 1.30103 11.1784 1.24831 11.1224 1.21142C10.7908 0.99291 10.3931 0.923125 10.0284 1.11813ZM7.76396 20.256C7.75511 20.0744 7.74999 19.8842 7.74999 19.6875C7.75 18.6347 7.89677 17.3059 8.47802 16.0708C8.67271 15.6572 8.91614 15.254 9.21914 14.8753C9.47408 14.5566 9.89709 14.4248 10.2879 14.5423C10.6787 14.6598 10.959 15.003 10.9959 15.4094C11.2221 17.8977 12.2225 19.2892 13.099 20.0626C13.5469 20.4579 13.979 20.7056 14.292 20.8525C15.5 20.9999 17.8849 18.6892 18.3955 17.7882C19.0569 16.6211 19.1756 15.356 19.0091 14.1351C18.8146 12.7092 18.2304 11.3897 17.7656 10.5337L14.6585 13.2525C14.3033 13.5634 13.779 13.5835 13.401 13.3008C13.023 13.018 12.8942 12.5095 13.092 12.0809C14.4081 9.22933 13.655 6.97987 12.5518 5.38019C12.1138 4.74521 11.6209 4.21649 11.18 3.80695C11.0999 4.088 10.9997 4.39262 10.8742 4.71284C10.696 5.16755 10.4662 5.65531 10.1704 6.15187C9.50801 7.26379 8.51483 8.41987 7.02982 9.34797C5.57752 10.2556 4.71646 12.6406 5.04885 15.2768C5.29944 17.2643 6.20241 19.1244 7.76396 20.256Z" fill="#0F0F0F"></path> </g></svg>                                     </span> 
+                                     </label> 
+                                  </div>
 
-                        <div class="light-card glass-card" data-room="garage">
-                            <div class="light-icon">
-                                <i class="fas fa-car"></i>
+                                  <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 28px; margin-left: 10px; " >Détecteur de Fumée</h3>
                             </div>
-                            <h3>Garage</h3>
-                            <div class="light-switch">
-                                <input type="checkbox" id="garage" onchange="switchLED(this)">
-                                <label for="garage" class="switch-label">
-                                    <span class="switch-slider"></span>
-                                </label>
+                            <div class="col">
+                                <div style="margin-left: 220px; margin-bottom: 10px;" class="containerc">
+                                    <input id="auth" type="checkbox">
+                                     <label id="buttonc" class="buttonc" for="auth">
+                                        <svg class = "icon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="m 8.074219 0 c -1.203125 -0.0117188 -2.40625 0.285156 -3.492188 0.890625 c -0.480469 0.269531 -0.652343 0.878906 -0.382812 1.359375 c 0.269531 0.484375 0.878906 0.65625 1.359375 0.386719 c 1.550781 -0.867188 3.4375 -0.847657 4.972656 0.050781 c 1.53125 0.898438 2.46875 2.535156 2.46875 4.3125 v 1 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -1 c 0 -0.019531 0 -0.039062 -0.003906 -0.054688 c -0.019532 -2.460937 -1.332032 -4.738281 -3.457032 -5.984374 c -1.070312 -0.628907 -2.265624 -0.9492192 -3.46875 -0.960938 z m -5.199219 2.832031 c -0.066406 0 -0.132812 0.007813 -0.195312 0.023438 c -0.257813 0.058593 -0.484376 0.21875 -0.625 0.445312 c -0.6875 1.109375 -1.054688 2.390625 -1.054688 3.699219 v 5.0625 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -5.0625 c 0 -0.933594 0.261719 -1.851562 0.753906 -2.644531 c 0.292969 -0.46875 0.148438 -1.082031 -0.320312 -1.375 c -0.167969 -0.105469 -0.363282 -0.15625 -0.558594 -0.148438 z m 5.125 0.167969 c -2.199219 0 -4 1.800781 -4 4 v 1 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -1 c 0 -1.117188 0.882812 -2 2 -2 s 2 0.882812 2 2 v 5 s 0.007812 0.441406 0.175781 0.941406 s 0.5 1.148438 1.117188 1.765625 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 s 0.390625 -1.023437 0 -1.414062 c -0.382812 -0.382813 -0.550781 -0.734375 -0.632812 -0.984375 s -0.074219 -0.308594 -0.074219 -0.308594 v -5 c 0 -2.199219 -1.800781 -4 -4 -4 z m 0 3 c -0.550781 0 -1 0.449219 -1 1 v 5 s 0 0.59375 0.144531 1.320312 c 0.144531 0.726563 0.414063 1.652344 1.148438 2.386719 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 s 0.390625 -1.023437 0 -1.414062 c -0.265625 -0.265625 -0.496093 -0.839844 -0.601562 -1.363281 c -0.105469 -0.523438 -0.105469 -0.929688 -0.105469 -0.929688 v -5 c 0 -0.550781 -0.449219 -1 -1 -1 z m -3 4 c -0.550781 0 -1 0.449219 -1 1 v 3 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -3 c 0 -0.550781 -0.449219 -1 -1 -1 z m 9 0 c -0.550781 0 -1 0.449219 -1 1 s 0.449219 1 1 1 s 1 -0.449219 1 -1 s -0.449219 -1 -1 -1 z m 0 0" fill="#2e3434"></path> </g></svg>
+                                     </label> 
+                                  </div>
+
+                                  <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 28px; margin-left: 10px;" >Authentification par Cartes </h3>
                             </div>
                         </div>
                     </div>
-                </section>
-                <!-- Sensors Section -->
-                <section class="control-section">
-                    <div class="section-header">
-                        <i class="fas fa-shield-alt"></i>
-                        <h2>Détecteurs Sensoriels</h2>
-                    </div>
-                    <div class="sensors-grid">
-                        <div class="sensor-card glass-card">
-                            <div class="sensor-indicator">
-                                <input type="checkbox" id="presence" class="sensor-input">
-                                <label for="presence" class="sensor-label">
-                                    <i class="fas fa-walking"></i>
-                                </label>
-                            </div>
-                            <h3>Détecteur de Présence</h3>
-                            <span class="sensor-status">Inactif</span>
-                        </div>
-
-                        <div class="sensor-card glass-card">
-                            <div class="sensor-indicator">
-                                <input type="checkbox" id="smoke" class="sensor-input">
-                                <label for="smoke" class="sensor-label">
-                                    <i class="fas fa-fire-smoke"></i>
-                                </label>
-                            </div>
-                            <h3>Détecteur de Fumée</h3>
-                            <span class="sensor-status">Sécurisé</span>
-                        </div>
-
-                        <div class="sensor-card glass-card">
-                            <div class="sensor-indicator">
-                                <input type="checkbox" id="auth" class="sensor-input">
-                                <label for="auth" class="sensor-label">
-                                    <i class="fas fa-id-card"></i>
-                                </label>
-                            </div>
-                            <h3>Authentification RFID</h3>
-                            <span class="sensor-status">En attente</span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Alarm Section -->
-                <section class="control-section alarm-section">
-                    <div class="section-header">
-                        <i class="fas fa-alarm-clock"></i>
-                        <h2>Réveil Intelligent</h2>
-                    </div>
-                    <div class="alarm-card glass-card">
-                        <form id="alarmForm" class="alarm-form">
-                            <div class="time-input-container">
-                                <input type="time" id="alarmTime" class="alarm-time-input" value="10:05" required>
-                                <label for="alarmTime" class="time-label">Heure du réveil</label>
-                            </div>
-                            <button type="submit" class="alarm-btn">
-                                <i class="fas fa-clock"></i>
-                                Programmer
-                            </button>
-                            <p id="status" class="alarm-status"></p>
-                        </form>
-                    </div>
-                </section>
-            </div>
-            <!-- Right Column -->
-            <div class="right-column">
-                <!-- Clock and Date Widget -->
-                <section class="widget-section">
-                    <div class="datetime-widget glass-card">
-                        <div class="clock-container">
-                            <div class="analog-clock">
-                                <div class="clock-face">
-                                    <div class="hour-hand" id="hr"></div>
-                                    <div class="minute-hand" id="mn"></div>
-                                    <div class="second-hand" id="sc"></div>
-                                    <div class="center-dot"></div>
-                                </div>
-                            </div>
-                            <div class="digital-time">
-                                <div class="time-display" id="digital-time"></div>
-                                <div class="date-display" id="date-display">
-                                    <span id="day">day</span>,
-                                    <span id="daynum">00</span>
-                                    <span id="month">month</span>
-                                    <span id="year">0000</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Climate Control -->
-                <section class="widget-section">
-                    <div class="section-header">
-                        <i class="fas fa-thermometer-half"></i>
-                        <h2>Climat</h2>
-                    </div>
-                    <div class="climate-grid">
-                        <div class="climate-card glass-card">
-                            <div class="gauge-header">
-                                <i class="fas fa-temperature-high"></i>
-                                <h3>Température</h3>
-                            </div>
-                            <div id="gauge_temp" class="gauge-container modern-gauge"></div>
-                        </div>
-                        <div class="climate-card glass-card">
-                            <div class="gauge-header">
-                                <i class="fas fa-tint"></i>
-                                <h3>Humidité</h3>
-                            </div>
-                            <div id="gauge_hum" class="gauge-container modern-gauge"></div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Security Section -->
-                <section class="widget-section">
-                    <div class="section-header">
-                        <i class="fas fa-lock"></i>
-                        <h2>Sécurité</h2>
-                    </div>
-                    <div class="security-grid">
-                        <div class="door-card glass-card">
-                            <div class="door-control" id="d1" onclick="toggleDoors1()">
-                                <div class="door-wrapper">
-                                    <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?cs=srgb&dl=pexels-pixabay-276724.jpg&fm=jpg" alt="Entrée" class="door-image">
-                                    <div id="left-door1" class="door-panel left">
-                                        <div class="door-handle"></div>
-                                    </div>
-                                    <div id="right-door1" class="door-panel right">
-                                        <div class="door-handle"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h3>Entrée Principale</h3>
-                            <span class="door-status" id="door1-status">Fermée</span>
-                        </div>
-
-                        <div class="door-card glass-card">
-                            <div class="door-control" id="d2" onclick="toggleDoors2()">
-                                <div class="door-wrapper">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-gHRKbPfAPUlJjXVoO5kZOD0PCVhfWqv0Zg&s" alt="Garage" class="door-image">
-                                    <div id="left-door2" class="door-panel left">
-                                        <div class="door-handle"></div>
-                                    </div>
-                                    <div id="right-door2" class="door-panel right">
-                                        <div class="door-handle"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h3>Garage</h3>
-                            <span class="door-status" id="door2-status">Fermée</span>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-
-        <!-- Voice Control Button -->
-        <div class="voice-control">
-            <button id="record-button" class="voice-btn">
-                <div class="voice-icon">
-                    <i class="fas fa-microphone"></i>
                 </div>
-                <div class="voice-waves">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div style=" height: 15%; margin-left: 0px; " class="row">
+                    <div style = "width: 40%" class="card text-center">
+                        <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 28px; margin-left: 10px;" >Réveil de la Chambre</h3>
+                        <form id="alarmForm">
+                            <input type="time" class="form-control" id="alarmTime" required value="10:05 AM" style="font-size: 28px; font-weight: 700; color: black;" />
+                            <button type="submit" class="btn">Programmer</button>
+                            <p id="status"></p>
+                          </form>
+                    </div>
                 </div>
-            </button>
-            <span class="voice-hint">Appuyez et maintenez pour parler</span>
-        </div>
+            </div>
+            <div class="col-6">
+                <div style=" height: 25%; margin-left: 40px; margin-top: 40px;" class="row">
+                    <div style="margin-top: 20px;" class="clock col-6">
+                        <div class="hour">
+                            <div class="hr" id="hr"></div>
+                        </div>
 
-        <!-- Loading Animation -->
-        <div class="loading-overlay" id="overlay">
-            <div class="loading-spinner" id="loader">
-                <div class="spinner-ring"></div>
-                <div class="spinner-ring"></div>
-                <div class="spinner-ring"></div>
-                <p>Traitement en cours...</p>
+                        <div class="min">
+                            <div class="mn" id="mn"></div>
+                        </div>
+
+                        <div class="sec">
+                            <div class="sc" id="sc"></div>
+                        </div>
+
+                    </div>
+
+                    <div style="margin-left: 70px;"class="col-6">
+                        <div class="display-date">
+                            <span id="day">day</span>,
+                            <span id="daynum">00</span>
+                            <span id="month">month</span>
+                            <span id="year">0000</span>
+                        </div>
+                        <div class="display-time"></div>
+                    </div>
+
+                </div>
+                <div style=" height: 45%; margin-left: 70px; margin-bottom: 50px;" class="row text-center">
+                    <div style = "width: 35%" class="card ">
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 28px; margin-left: 10px;" >Température </h3>
+                                <div id="gauge_temp" class="gauge-container three">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 28px; margin-left: 10px;" >Humidité </h3>
+                                <div id="gauge_hum" class="gauge-container three">
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div style="height: 25%; margin-left: 70px" class="row">
+                    <h3 class="noto-serif" style = "font-weight: 800; color: white; font-size: 38px; margin-left: 40px;" >Sécurité </h3>
+                    <div style = "width: 38%; " class="card">
+                        <div class="row text-center">
+                            <div class="col text-center">
+                                
+                                <div class="wrapperd" id="d1" onclick="toggleDoors1()">
+                                    <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?cs=srgb&dl=pexels-pixabay-276724.jpg&fm=jpg" alt="minion">
+                                    <div id="left-door1" class="door">
+                                        <div class="shape"></div>
+                                        <div class="shape"></div>
+                                        <div id="left-knob" class="knob"></div>
+                                    </div>
+                                    <div id="right-door1" class="door">
+                                        <div class="shape"></div>
+                                        <div class="shape"></div>
+                                        <div id="right-knob" class="knob"></div>
+                                    </div>
+                                </div>
+                                <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 38px; margin-top: 30px;" >Entrée </h3>
+
+                            </div>
+
+                            <div class="col text-center">
+                                
+                                <div class="wrapperd" id="d2" onclick="toggleDoors2()">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-gHRKbPfAPUlJjXVoO5kZOD0PCVhfWqv0Zg&s" alt="minion">
+                                    <div id="left-door2" class="door">
+                                        <div class="shape"></div>
+                                        <div class="shape"></div>
+                                        <div id="left-knob" class="knob"></div>
+                                    </div>
+                                    <div id="right-door2" class="door">
+                                        <div class="shape"></div>
+                                        <div class="shape"></div>
+                                        <div id="right-knob" class="knob"></div>
+                                    </div>
+                                </div>
+                                <h3 class="noto-serif" style = "font-weight: 700; color: white; font-size: 38px; margin-top: 30px;" >Garage </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <button id="record-button" >
+        <svg viewBox="0 0 48 48" id="b" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="3.6480000000000006"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs> <style>.i{fill:none;stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round;}</style> </defs> <g id="c"> <line id="d" class="i" x1="23.8199" y1="3.5" x2="23.8199" y2="44.5"></line> <line id="e" class="i" x1="16.5899" y1="11.9828" x2="16.5899" y2="36.0172"></line> <line id="f" class="i" x1="9.3736" y1="19.7587" x2="9.3736" y2="28.2413"></line> <line id="g" class="i" x1="31.0986" y1="11.9828" x2="31.0986" y2="36.0172"></line> <line id="h" class="i" x1="38.6264" y1="19.7587" x2="38.6264" y2="28.2413"></line> </g> </g></svg>
+    </button>
+    <div class="wrapper" id="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
     
-    <p id="transcript" style="display: none;"></p>
-    <script type="text/javascript" src="js/gauge.js"></script>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <p id="transcript"></p>
+    <script type="text/javascript" src="js/gauge.js"> </script>
     <script>
-        // 🔗 WebSocket Connection for Real-time Updates
-        const socket = io('http://127.0.0.1:5000');
-        
-        socket.on('connect', () => {
-            console.log('🔗 Connected to Homelinks AI Server');
-            // Update status indicator
-            const statusText = document.querySelector('.status-text');
-            const apiStatus = document.getElementById('api-status');
-            const apiStatusText = document.querySelector('.api-status-text');
-            
-            if (statusText) {
-                statusText.textContent = 'SYSTÈME CONNECTÉ';
-                statusText.style.color = 'var(--neon-lime)';
-            }
-            
-            if (apiStatus && apiStatusText) {
-                apiStatus.className = 'api-status connected';
-                apiStatusText.textContent = 'IA Connectée';
-            }
-        });
-        
-        socket.on('audio_ready', (data) => {
-            console.log('🎵 Audio response ready:', data.url);
-            // Auto-play réponse audio via WebSocket
-            fetch(`http://127.0.0.1:5000${data.url}`)
-                .then(response => response.blob())
-                .then(audioBlob => {
-                    const audio = new Audio(URL.createObjectURL(audioBlob));
-                    audio.play();
-                })
-                .catch(err => {
-                    console.log('Fallback to direct audio URL');
-                    const audio = new Audio(`http://127.0.0.1:5000/audio`);
-                    audio.play();
-                });
-        });
-
-        socket.on('disconnect', () => {
-            console.log('❌ Disconnected from AI Server');
-            const statusText = document.querySelector('.status-text');
-            const apiStatus = document.getElementById('api-status');
-            const apiStatusText = document.querySelector('.api-status-text');
-            
-            if (statusText) {
-                statusText.textContent = 'CONNEXION PERDUE';
-                statusText.style.color = 'var(--neon-orange)';
-            }
-            
-            if (apiStatus && apiStatusText) {
-                apiStatus.className = 'api-status error';
-                apiStatusText.textContent = 'IA Déconnectée';
-            }
-        });
-
-        // 🚀 Revolutionary Theme System
-        const themeToggle = document.getElementById('theme-switch');
-        const body = document.body;
-
-        themeToggle.addEventListener('change', () => {
-            body.classList.toggle('light-theme');
-            localStorage.setItem('theme', body.classList.contains('light-theme') ? 'light' : 'dark');
-        });
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            body.classList.add('light-theme');
-            themeToggle.checked = true;
+        const displayTime = document.querySelector(".display-time");
+        // Time
+        function showTime() {
+        let time = new Date();
+        displayTime.innerText = time.toLocaleTimeString("en-US", { hour12: false });
+        setTimeout(showTime, 1000);
         }
 
-        // Digital Time Display
-        function updateDigitalTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('fr-FR', { 
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.getElementById('digital-time').textContent = timeString;
-        }
+        showTime();
 
-        // Analog Clock
-        function updateAnalogClock() {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-
-            const hourDeg = (hours % 12) * 30 + minutes * 0.5;
-            const minuteDeg = minutes * 6;
-            const secondDeg = seconds * 6;
-
-            document.getElementById('hr').style.transform = `rotate(${hourDeg}deg)`;
-            document.getElementById('mn').style.transform = `rotate(${minuteDeg}deg)`;
-            document.getElementById('sc').style.transform = `rotate(${secondDeg}deg)`;
-        }
-
-        // Update time displays
-        function updateTime() {
-            updateDigitalTime();
-            updateAnalogClock();
-        }
-
-        setInterval(updateTime, 1000);
-        updateTime(); // Initial call
-
-        // Date Display
+        // Date
         function updateDate() {
-            const today = new Date();
-            const dayName = today.getDay();
-            const dayNum = today.getDate();
-            const month = today.getMonth();
-            const year = today.getFullYear();
+        let today = new Date();
 
-            const months = [
-                "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-                "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
-            ];
-            const dayWeek = [
-                "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
-            ];
+        // return number
+        let dayName = today.getDay(),
+            dayNum = today.getDate(),
+            month = today.getMonth(),
+            year = today.getFullYear();
 
-            document.getElementById('day').textContent = dayWeek[dayName];
-            document.getElementById('daynum').textContent = dayNum.toString().padStart(2, '0');
-            document.getElementById('month').textContent = months[month];
-            document.getElementById('year').textContent = year;
+        const months = [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
+        ];
+        const dayWeek = [
+            "Dimanche",
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi",
+        ];
+        // value -> ID of the html element
+        const IDCollection = ["day", "daynum", "month", "year"];
+        // return value array with number as a index
+        const val = [dayWeek[dayName], dayNum, months[month], year];
+        for (let i = 0; i < IDCollection.length; i++) {
+            document.getElementById(IDCollection[i]).firstChild.nodeValue = val[i];
+        }
         }
 
         updateDate();
 
-        // Enhanced Door Controls
+
+        const deg = 6;
+        const hr = document.querySelector('#hr');
+        const mn = document.querySelector('#mn');
+        const sc = document.querySelector('#sc');
+        
+        setInterval(() =>{
+            
+             let day = new Date();
+        let hh = day.getHours() * 30;
+        let mm = day.getMinutes() * deg;
+        let ss = day.getSeconds() * deg;
+        
+        hr.style.transform = `rotateZ(${(hh)+(mm/12)}deg)`;
+        mn.style.transform = `rotateZ(${mm}deg)`;
+        sc.style.transform = `rotateZ(${ss}deg)`;
+            
+        })
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const apiBaseUrl = 'http://your-esp32-ip-address'; // Remplacez par l'adresse IP de votre ESP32
+        
+            // Fonction pour envoyer des requêtes POST à l'ESP32
+            function sendRequest(endpoint, data) {
+                fetch(`${apiBaseUrl}/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                }).then(data => {
+                    console.log('Success:', data);
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        
+            // Fonction pour gérer les changements d'état des interrupteurs
+            function switchLED(checkbox) {
+                const id = checkbox.id;
+                const state = checkbox.checked;
+                sendRequest('setLED', { id, state });
+            }
+        
+            // Fonction pour gérer la soumission du formulaire de programmation de l'alarme
+            document.getElementById('alarmForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const alarmTime = document.getElementById('alarmTime').value;
+                sendRequest('setAlarm', { time: alarmTime });
+                document.getElementById('status').innerText = `Alarm set for ${alarmTime}`;
+            });
+        
+            // Fonction pour gérer les détecteurs sensoriels
+            document.getElementById('presence').addEventListener('change', () => {
+                const state = document.getElementById('presence').checked;
+                sendRequest('setSensor', { sensor: 'presence', state });
+            });
+        
+            document.getElementById('smoke').addEventListener('change', () => {
+                const state = document.getElementById('smoke').checked;
+                sendRequest('setSensor', { sensor: 'smoke', state });
+            });
+        });
+        
+    </script>
+    <script>
+
         function toggleDoors1() {
-            const door = document.getElementById('d1');
-            const status = document.getElementById('door1-status');
-            door.classList.toggle('open');
-            status.textContent = door.classList.contains('open') ? 'Ouverte' : 'Fermée';
-            status.className = door.classList.contains('open') ? 'door-status open' : 'door-status';
+            var wrapper1 = document.getElementById('d1');
+            wrapper1.classList.toggle('open');
+            switchMotor(wrapper.classList.contains('open') ? 'on' : 'off');
         }
 
         function toggleDoors2() {
-            const door = document.getElementById('d2');
-            const status = document.getElementById('door2-status');
-            door.classList.toggle('open');
-            status.textContent = door.classList.contains('open') ? 'Ouverte' : 'Fermée';
-            status.className = door.classList.contains('open') ? 'door-status open' : 'door-status';
+            var wrapper2 = document.getElementById('d2');
+            wrapper2.classList.toggle('open');
+            switchMotor(wrapper.classList.contains('open') ? 'on' : 'off');
         }
 
-        // Enhanced Switch LED function
-        function switchLED(checkbox) {
-            const card = checkbox.closest('.light-card');
-            const room = card.dataset.room;
-            
-            if (checkbox.checked) {
-                card.classList.add('active');
-            } else {
-                card.classList.remove('active');
-            }
-
-            // Call your existing API
-            var state = checkbox.checked ? 'on' : 'off';
+        function switchMotor(state) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log(`${room} light ${state}`);
+                    console.log(this.responseText);
                 }
             };
-            xhttp.open("GET", "http://34.134.18.88:5000/" + checkbox.id + "/" + state, true);
+            xhttp.open("GET", "http://127.0.0.1:5500/motor/" + state, true);
             xhttp.send();
         }
 
-        // Enhanced Sensor Status Updates
-        function updateSensorStatus(sensorId, active) {
-            const sensorCard = document.querySelector(`#${sensorId}`).closest('.sensor-card');
-            const statusText = sensorCard.querySelector('.sensor-status');
-            
-            if (active) {
-                sensorCard.classList.add('active');
-                document.getElementById(sensorId).checked = true;
-                
-                switch(sensorId) {
-                    case 'presence':
-                        statusText.textContent = 'Présence détectée';
-                        break;
-                    case 'smoke':
-                        statusText.textContent = 'Fumée détectée';
-                        break;
-                    case 'auth':
-                        statusText.textContent = 'Authentifié';
-                        break;
-                }
-            } else {
-                sensorCard.classList.remove('active');
-                document.getElementById(sensorId).checked = false;
-                
-                switch(sensorId) {
-                    case 'presence':
-                        statusText.textContent = 'Inactif';
-                        break;
-                    case 'smoke':
-                        statusText.textContent = 'Sécurisé';
-                        break;
-                    case 'auth':
-                        statusText.textContent = 'En attente';
-                        break;
-                }
-            }
-        }
-
-        // Initialize gauges
         var gauge_temp = Gauge(
-            document.getElementById("gauge_temp"), {
-                label: function(value) {
-                    return value + "°C";
+        document.getElementById("gauge_temp"),{
+            label: function(value) {
+            return value + "°C";
+            },
+          max: 100,
+          value: 0,
+        }
+      );
+
+      var gauge_hum = Gauge(
+        document.getElementById("gauge_hum"),{
+            label: function(value) {
+                return value + "%";
                 },
-                max: 100,
-                value: 0,
-            }
-        );
+          max: 100,
+          value: 0
+        }
+      );
 
-        var gauge_hum = Gauge(
-            document.getElementById("gauge_hum"), {
-                label: function(value) {
-                    return value + "%";
-                },
-                max: 100,
-                value: 0
-            }
-        );
+      let temp = "";
+      let hum = "";
 
-        let temp = "";
-        let hum = "";
+      temp = "10°C";
+      hum = "90%";
 
-        temp = "10°C";
-        hum = "90%";
+      setInterval(function () {
+        gauge_temp.setValueAnimated(Math.floor(Math.random() * (45 - 35 + 1)) + 35, 100);
+    }, 3000); // Intervalle de 10 secondes
 
-        // Update gauges with random values
-        setInterval(function () {
-            gauge_temp.setValueAnimated(Math.floor(Math.random() * (45 - 35 + 1)) + 35, 100);
-        }, 3000);
 
-        setInterval(function () {
-            gauge_hum.setValueAnimated(Math.floor(Math.random() * (90 - 70 + 1)) + 70, 100);
-        }, 3000);
+      setInterval(function () {
+        gauge_hum.setValueAnimated(Math.floor(Math.random() * (90 - 70 + 1)) + 70, 100);
+    }, 3000);
 
-        // Voice control
+    </script>
+    <script>
         let chunks = [];
         let recorder;
 
         document.getElementById('record-button').onmousedown = () => {
-            document.getElementById('overlay').style.display = 'flex';
-            document.getElementById('record-button').classList.add('recording');
-            
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(stream => {
-                    recorder = new MediaRecorder(stream);
-                    recorder.ondataavailable = e => chunks.push(e.data);
-                    recorder.onstop = saveRecording;
-                    recorder.start();
-                });
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('loader').style.display = 'flex';
+            document.getElementById('record-button').style.zIndex = '150';
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+            recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = saveRecording;
+            recorder.start();
+            });
         };
 
         document.getElementById('record-button').onmouseup = () => {
             document.getElementById('overlay').style.display = 'none';
-            document.getElementById('record-button').classList.remove('recording');
-            if (recorder) {
-                recorder.stop();
-            }
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('record-button').style.zIndex = '';
+        recorder.stop();
         };
 
         function saveRecording() {
-            const blob = new Blob(chunks, { type: 'audio/wav' });
-            chunks = [];
-            sendAudioToServer(blob);
+        const blob = new Blob(chunks, { type: 'audio/wav' });
+        chunks = [];
+        const audioURL = URL.createObjectURL(blob);
+        sendAudioToServer(blob);
         }
 
         function sendAudioToServer(blob) {
-            console.log('🎵 Sending audio to server, size:', blob.size);
-            
             const formData = new FormData();
-            formData.append('audio', blob, 'recording.wav');
+            formData.append('audio', blob);
         
             fetch('http://127.0.0.1:5000/transcribe', {
-                method: 'POST',
-                body: formData
+            method: 'POST',
+            body: formData
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Transcription failed: ${response.status} ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('✅ Transcription received:', data.transcription);
-                handleTranscription(data.transcription);
-            })
-            .catch(error => {
-                console.error('❌ Transcription error:', error);
-                const voiceStatus = document.querySelector('.voice-status');
-                if (voiceStatus) {
-                    voiceStatus.textContent = `Erreur transcription: ${error.message}`;
-                    setTimeout(() => {
-                        voiceStatus.textContent = 'Appuyez pour activer';
-                    }, 3000);
-                }
-            });
+            .then(response => response.json())
+            .then(data => handleTranscription(data.transcription));
         }
 
         function handleTranscription(transcription) {
-            console.log('🎯 Processing transcription:', transcription);
-            
-            // Update voice status
-            const voiceStatus = document.querySelector('.voice-status');
-            if (voiceStatus) {
-                voiceStatus.textContent = `Traitement: "${transcription}"`;
-            }
-            
             let states = get_State();
             let all_states = get_All_State();
-            
             fetch('http://127.0.0.1:5000/process', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    text: transcription, 
-                    state: states, 
-                    all_state: all_states
-                })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: transcription, state: states, all_state: all_states})
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('🤖 AI Response:', data);
-                
-                // Display assistant response if available
-                if (data.assistant_response) {
-                    if (voiceStatus) {
-                        voiceStatus.textContent = data.assistant_response;
-                        setTimeout(() => {
-                            voiceStatus.textContent = 'Appuyez pour activer';
-                        }, 3000);
-                    }
-                }
-                
-                executeCommands(JSON.stringify(data));
-            })
-            .catch(error => {
-                console.error('❌ API Error:', error);
-                if (voiceStatus) {
-                    voiceStatus.textContent = `Erreur: ${error.message}`;
-                    setTimeout(() => {
-                        voiceStatus.textContent = 'Appuyez pour activer';
-                    }, 3000);
-                }
-            });
+            .then(response => response.json())
+            .then(data => executeCommands(data.commands));
         }
 
-        function executeCommands(json) {
-            const etats = JSON.parse(json);
-            console.log('🎮 Executing commands:', etats);
+            function executeCommands(json) {
+                // Parse le JSON en objet JavaScript
+                const etats = JSON.parse(json);
 
-            // Handle assistant response (for legacy compatibility)
-            if (etats['assistant_response']) {
-                console.log('🤖 Assistant says:', etats['assistant_response']);
+                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
+                if (etats['audio'] == true) {
+                    const audio = new Audio(`http://127.0.0.1:5000/audio`);
+                    audio.play();
+                }
+
+                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
+                if (etats['alarm']) {
+                    document.getElementById("alarmTime").value = etats['alarm'];
+                }
+
+                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
+                var wrapper1 = document.getElementById('d1');
+                if ((etats['door1']==="on" && wrapper1.classList.contains('open')) || (etats['door1']==="off" && !wrapper1.classList.contains('open'))){
+                    console.log(" ")
+                }else{
+                    wrapper1.classList.toggle('open');
+                }
+
+                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
+                var wrapper2 = document.getElementById('d2');
+                if ((etats['door2']==="on" && wrapper2.classList.contains('open')) || (etats['door2']==="off" && !wrapper2.classList.contains('open'))){
+                    console.log(" ")
+                }else{
+                    wrapper2.classList.toggle('open');
+                }
+
+                // Convertir l'objet en un tableau d'entrées [clé, valeur]
+                const entries = Object.entries(etats);
+
+                // Parcourir les entrées
+                for (let i = 0; i < entries.length ; i++) {
+                    const [id, checked] = entries[i];
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        checkbox.checked = checked;
+                    }
+                }
+
+                
             }
 
-            // Audio response handling - prioritize WebSocket, fallback to direct
-            if (etats['audio'] == true || !socket.connected) {
-                // Fallback to direct audio fetch if WebSocket not connected
-                const audio = new Audio(`http://127.0.0.1:5000/audio`);
-                audio.play().catch(err => {
-                    console.log('Audio playback failed:', err);
+            function get_All_State() {
+                // Crée un objet pour stocker l'état des checkboxes
+                const etats = {};
+    
+                // Liste des IDs des checkboxes
+                const ids = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage', 'smoke', 'presence', 'auth'];
+    
+                // Parcoure chaque ID et met à jour l'objet 'etats' avec l'état actuel des checkboxes
+                ids.forEach(id => {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) {
+                        etats[id] = checkbox.checked;
+                    }else{
+                        etats[id] = false;
+                    }
                 });
-            }
 
-            // Alarm handling
-            if (etats['alarm']) {
-                const alarmInput = document.getElementById("alarmTime");
-                if (alarmInput) {
-                    alarmInput.value = etats['alarm'];
+                etats['temp'] = temp;
+                etats['hum'] = hum;
+
+                var wrapper1 = document.getElementById('d1');
+                if (wrapper1.classList.contains('open')){
+                    etats['door1'] = "on";
+                }else{
+                    etats['door1'] = "off";
                 }
-            }
 
-            // Door controls with enhanced feedback
-            var wrapper1 = document.getElementById('d1');
-            if (wrapper1) {
-                const shouldBeOpen = etats['door1'] === "on";
-                const isCurrentlyOpen = wrapper1.classList.contains('open');
-                
-                if (shouldBeOpen !== isCurrentlyOpen) {
-                    toggleDoors1();
-                    // Visual feedback
-                    wrapper1.style.transform = 'scale(1.02)';
-                    setTimeout(() => {
-                        wrapper1.style.transform = '';
-                    }, 300);
+                var wrapper2 = document.getElementById('d2');
+                if (wrapper2.classList.contains('open')){
+                    etats['door2'] = "on";
+                }else{
+                    etats['door2'] = "off";
                 }
-            }
 
-            var wrapper2 = document.getElementById('d2');
-            if (wrapper2) {
-                const shouldBeOpen = etats['door2'] === "on";
-                const isCurrentlyOpen = wrapper2.classList.contains('open');
-                
-                if (shouldBeOpen !== isCurrentlyOpen) {
-                    toggleDoors2();
-                    // Visual feedback
-                    wrapper2.style.transform = 'scale(1.02)';
-                    setTimeout(() => {
-                        wrapper2.style.transform = '';
-                    }, 300);
+
+                etats['time'] = document.querySelector(".display-time").textContent + document.querySelector(".display-date").textContent
+    
+                // Convertit l'objet 'etats' en chaîne JSON
+                let etatsJson = JSON.stringify(etats);
+    
+                // Supprime le premier et dernier caractère pour enlever les accolades {}
+                etatsJson = etatsJson.slice(1, -1);
+    
+                // Retourne la chaîne JSON modifiée
+                return etatsJson;
                 }
-            }
 
-            // Device controls with enhanced visual feedback
-            const deviceIds = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage', 'smoke', 'presence', 'auth'];
-            
-            deviceIds.forEach(id => {
-                if (etats.hasOwnProperty(id)) {
-                    const element = document.getElementById(id);
-                    const card = document.querySelector(`[data-room="${id}"]`) || 
-                               document.querySelector(`#${id}`).closest('.light-card, .sensor-card');
-                    
-                    if (element && element.checked !== etats[id]) {
-                        element.checked = etats[id];
-                        
-                        // Enhanced visual feedback
-                        if (card) {
-                            if (etats[id]) {
-                                card.classList.add('active');
-                                // Pulse effect for activation
-                                card.style.animation = 'lightPulse 0.6s ease-out';
-                            } else {
-                                card.classList.remove('active');
-                            }
-                            
-                            // Reset animation
-                            setTimeout(() => {
-                                card.style.animation = '';
-                            }, 600);
-                        }
-                        
-                        // Trigger change events for API calls
-                        if (element.onchange) {
-                            element.onchange();
-                        }
-                        
-                        // Update status text for lights
-                        const statusElement = card?.querySelector('.light-status');
-                        if (statusElement) {
-                            statusElement.textContent = etats[id] ? 'ALLUMÉ' : 'ÉTEINT';
-                        }
-                    }
-                }
-            });
-            
-            console.log('✅ Commands executed successfully');
-        }
-
-        function get_All_State() {
-            const etats = {};
-            const deviceIds = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage', 'smoke', 'presence', 'auth'];
-            
-            // Get device states
-            deviceIds.forEach(id => {
-                const element = document.getElementById(id);
-                etats[id] = element ? element.checked : false;
-            });
-
-            // Get sensor data (simulated for now)
-            etats['temp'] = document.querySelector('.sensor-value')?.textContent || "22°C";
-            etats['hum'] = document.querySelectorAll('.sensor-value')[1]?.textContent || "65%";
-
-            // Get door states
-            const wrapper1 = document.getElementById('d1');
-            etats['door1'] = wrapper1?.classList.contains('open') ? "on" : "off";
-
-            const wrapper2 = document.getElementById('d2');
-            etats['door2'] = wrapper2?.classList.contains('open') ? "on" : "off";
-
-            // Get current time in API format: "HH:MM:SS---DDMmmYYYY"
-            const now = new Date();
-            const time = now.toLocaleTimeString('fr-FR', { hour12: false });
-            const day = now.getDate().toString().padStart(2, '0');
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const month = months[now.getMonth()];
-            const year = now.getFullYear();
-            
-            etats['time'] = `${time}---${day}${month}${year}`;
-
-            // Convert to the string format expected by API
-            const etatsArray = Object.entries(etats).map(([key, value]) => {
-                const formattedValue = typeof value === 'string' ? `"${value}"` : value;
-                return `"${key}": ${formattedValue}`;
-            });
-            
-            return etatsArray.join(', ');
-        }
-
+            // Fonction pour appliquer l'état des checkboxes à partir d'un JSON
         function get_State() {
+            // Crée un objet pour stocker l'état des checkboxes
             const etats = {};
+
+            // Liste des IDs des checkboxes
             const ids = ['salon', 'cuisine', 'chambre', 'exterieur', 'garage'];
-            
+
+            // Parcoure chaque ID et met à jour l'objet 'etats' avec l'état actuel des checkboxes
             ids.forEach(id => {
                 const checkbox = document.getElementById(id);
-                etats[id] = checkbox ? checkbox.checked : false;
+                if (checkbox) {
+                    etats[id] = checkbox.checked;
+                }else{
+                    etats[id] = false;
+                }
             });
 
             var wrapper1 = document.getElementById('d1');
-            etats['door1'] = wrapper1.classList.contains('open') ? "on" : "off";
+            if (wrapper1.classList.contains('open')){
+                etats['door1'] = "on";
+            }else{
+                etats['door1'] = "off";
+            }
 
             var wrapper2 = document.getElementById('d2');
-            etats['door2'] = wrapper2.classList.contains('open') ? "on" : "off";
+            if (wrapper2.classList.contains('open')){
+                etats['door2'] = "on";
+            }else{
+                etats['door2'] = "off";
+            }
 
+
+            // Convertit l'objet 'etats' en chaîne JSON
             let etatsJson = JSON.stringify(etats);
-            return etatsJson.slice(1, -1);
+
+            // Supprime le premier et dernier caractère pour enlever les accolades {}
+            etatsJson = etatsJson.slice(1, -1);
+
+            // Retourne la chaîne JSON modifiée
+            return etatsJson;
+            }
+        
+
+    </script>
+    <!-- <script>
+        function switchLED(checkbox) {
+            var state = checkbox.checked ? 'on' : 'off';
+            var endpoint = checkbox.id;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://127.0.0.1:5500/" + endpoint + "/" + state, true);
+            xhttp.send();
         }
 
-        // Alarm form handling
-        document.getElementById('alarmForm').addEventListener('submit', function(event) {
+        document.getElementById(" alarmForm").addEventListener("submit", function (event) {
             event.preventDefault();
-            const alarmTime = document.getElementById('alarmTime').value;
-            const status = document.getElementById('status');
-            status.textContent = `Alarme programmée pour ${alarmTime}`;
-            status.style.color = 'var(--accent-color)';
-            
-            // Send to server if needed
-            fetch('http://34.134.18.88:5000/set-alarm', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'alarmTime=' + encodeURIComponent(alarmTime)
-            }).catch(err => console.log('Server not available'));
+            var alarmTime = document.getElementById("alarmTime").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5500/set-alarm", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("alarmTime=" + encodeURIComponent(alarmTime));
+            document.getElementById("status").innerText = "Alarme programmée pour " + alarmTime;
         });
-    </script>
+
+        function checkSensorStatus() {
+            checkRFIDStatus();
+            checkPresenceStatus();
+            checkSmokeStatus();
+        }
+
+        
+        function checkRFIDStatus() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    const button = document.getElementById('.buttonc');
+                        if (this.responseText == "RFID triggered") {
+                            button.style.backgroundColor = 'rgb(17, 255, 17)'; // Green color
+                            button.style.boxShadow = '0px 0px 1px rgb(17, 255, 17) inset, ' +
+                                                    '0px 0px 2px rgb(17, 255, 17) inset, ' +
+                                                    '0px 0px 10px rgb(17, 255, 17) inset, ' +
+                                                    '0px 0px 40px rgb(17, 255, 17), ' +
+                                                    '0px 0px 100px rgb(17, 255, 17), ' +
+                                                    '0px 0px 5px rgb(17, 255, 17)';
+                        } else {
+                            button.style.backgroundColor = 'rgb(255, 17, 17)'; // Red color
+                            button.style.boxShadow = '0px 0px 1px rgb(255, 17, 17) inset, ' +
+                                                    '0px 0px 2px rgb(255, 17, 17) inset, ' +
+                                                    '0px 0px 10px rgb(255, 17, 17) inset, ' +
+                                                    '0px 0px 40px rgb(255, 17, 17), ' +
+                                                    '0px 0px 100px rgb(255, 17, 17), ' +
+                                                    '0px 0px 5px rgb(255, 17, 17)';
+                        }
+                }
+            };
+            xhttp.open("GET", "http://127.0.0.1:5500/check-rfid", true);
+            xhttp.send();
+        }
+        
+        function checkPresenceStatus() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200) {
+                    if(this.responseText == "Presence detected"){
+
+                    }
+                    if(this.responseText == "No presence detected"){
+                        
+                    }
+                }
+                }
+            };
+            xhttp.open("GET", "http://127.0.0.1:5500/check-presence", true);
+            xhttp.send();
+        }
+        
+        function checkSmokeStatus() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(this.responseText == "Smoke detected"){
+    
+                        }
+                        if(this.responseText == "No smoke detected"){
+                            
+                        }
+                    }
+                }
+            };
+            xhttp.open("GET", "http://127.0.0.1:5500/check-smoke", true);
+            xhttp.send();
+        }
+        
+        // Call checkSensorStatus periodically to update the status
+        setInterval(checkSensorStatus, 500);
+        
+    </script> -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
