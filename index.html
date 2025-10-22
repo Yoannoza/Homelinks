@@ -474,7 +474,7 @@
             const formData = new FormData();
             formData.append('audio', blob);
         
-            fetch('http://127.0.0.1:5000/transcribe', {
+            fetch('https://homelinks.yoann-oza.me/transcribe', {
             method: 'POST',
             body: formData
             })
@@ -485,7 +485,7 @@
         function handleTranscription(transcription) {
             let states = get_State();
             let all_states = get_All_State();
-            fetch('http://127.0.0.1:5000/process', {
+            fetch('https://homelinks.yoann-oza.me/process', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -502,7 +502,7 @@
 
                 // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
                 if (etats['audio'] == true) {
-                    const audio = new Audio(`http://127.0.0.1:5000/audio`);
+                    const audio = new Audio(`https://homelinks.yoann-oza.me/audio`);
                     audio.play();
                 }
 
