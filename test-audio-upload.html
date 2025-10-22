@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Audio Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+        #record-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        #record-btn.recording {
+            background: #f44336;
+        }
+        #logs {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+        }
+        .error {
+            color: #f44;
+        }
+        .success {
+            color: #0f0;
+        }
+        .info {
+            color: #4af;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Test d'Upload Audio</h1>
+        <p>Cet outil permet de tester l'upload de fichiers audio vers le serveur.</p>
+        
+        <button id="record-btn">🎙️ Commencer l'enregistrement</button>
+        <button id="test-formats-btn">🔍 Tester les formats supportés</button>
+        <button id="clear-logs-btn">🗑️ Effacer les logs</button>
+        
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        const logsDiv = document.getElementById('logs');
+        let chunks = [];
+        let recorder;
+        let mimeType = 'audio/webm';
+        let isRecording = false;
+
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logsDiv.appendChild(entry);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function testSupportedFormats() {
+            log('=== Testing supported audio formats ===', 'info');
+            
+            const types = [
+                'audio/webm',
+                'audio/webm;codecs=opus',
+                'audio/webm;codecs=vp8,opus',
+                'audio/ogg;codecs=opus',
+                'audio/mp4',
+                'audio/mpeg',
+                'audio/wav'
+            ];
+            
+            types.forEach(type => {
+                const supported = MediaRecorder.isTypeSupported(type);
+                log(`${type}: ${supported ? '✅ Supported' : '❌ Not supported'}`, 
+                    supported ? 'success' : 'error');
+            });
+            
+            log('=== End of format test ===', 'info');
+        }
+
+        async function startRecording() {
+            try {
+                log('Requesting microphone access...', 'info');
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                log('Microphone access granted ✅', 'success');
+                
+                // Find best supported format
+                const types = [
+                    'audio/webm;codecs=opus',
+                    'audio/webm',
+                    'audio/ogg;codecs=opus',
+                    'audio/mp4',
+                    'audio/wav'
+                ];
+                
+                mimeType = types.find(type => MediaRecorder.isTypeSupported(type)) || 'audio/webm';
+                log(`Using MIME type: ${mimeType}`, 'info');
+                
+                recorder = new MediaRecorder(stream, { mimeType: mimeType });
+                
+                recorder.ondataavailable = e => {
+                    chunks.push(e.data);
+                    log(`Data chunk received: ${e.data.size} bytes`, 'info');
+                };
+                
+                recorder.onstop = () => {
+                    log('Recording stopped', 'info');
+                    saveRecording();
+                    stream.getTracks().forEach(track => track.stop());
+                };
+                
+                recorder.onerror = error => {
+                    log(`Recorder error: ${error}`, 'error');
+                };
+                
+                recorder.start();
+                isRecording = true;
+                log('Recording started 🔴', 'success');
+                
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function stopRecording() {
+            if (recorder && recorder.state !== 'inactive') {
+                recorder.stop();
+                isRecording = false;
+                log('Stopping recording...', 'info');
+            }
+        }
+
+        function saveRecording() {
+            const blob = new Blob(chunks, { type: mimeType });
+            chunks = [];
+            
+            log('=== Audio Blob Info ===', 'info');
+            log(`Size: ${blob.size} bytes`, 'info');
+            log(`Type: ${blob.type}`, 'info');
+            
+            // Determine extension
+            let extension = 'webm';
+            if (mimeType.includes('wav')) extension = 'wav';
+            else if (mimeType.includes('ogg')) extension = 'ogg';
+            else if (mimeType.includes('mp4')) extension = 'm4a';
+            else if (mimeType.includes('webm')) extension = 'webm';
+            
+            log(`Extension: ${extension}`, 'info');
+            
+            sendAudioToServer(blob, extension);
+        }
+
+        function sendAudioToServer(blob, extension) {
+            const formData = new FormData();
+            const filename = `recording.${extension}`;
+            formData.append('audio', blob, filename);
+            
+            log('=== Sending to server ===', 'info');
+            log(`Filename: ${filename}`, 'info');
+            log(`Blob type: ${blob.type}`, 'info');
+            log(`Blob size: ${blob.size} bytes`, 'info');
+            
+            fetch('https://homelinks.yoann-oza.me/transcribe', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                log(`Response status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'error');
+                
+                return response.text().then(text => {
+                    log(`Response body: ${text}`, response.ok ? 'success' : 'error');
+                    
+                    if (response.ok) {
+                        try {
+                            const json = JSON.parse(text);
+                            log(`Transcription: ${json.transcription}`, 'success');
+                        } catch (e) {
+                            log('Response is not JSON', 'info');
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                log(`Network error: ${error.message}`, 'error');
+            });
+        }
+
+        // Event listeners
+        document.getElementById('record-btn').addEventListener('click', function() {
+            if (isRecording) {
+                this.textContent = '🎙️ Commencer l\'enregistrement';
+                this.classList.remove('recording');
+                stopRecording();
+            } else {
+                this.textContent = '⏹️ Arrêter l\'enregistrement';
+                this.classList.add('recording');
+                startRecording();
+            }
+        });
+
+        document.getElementById('test-formats-btn').addEventListener('click', testSupportedFormats);
+        
+        document.getElementById('clear-logs-btn').addEventListener('click', () => {
+            logsDiv.innerHTML = '';
+            log('Logs cleared', 'info');
+        });
+
+        // Initial log
+        log('🎤 Audio Upload Tester ready!', 'success');
+        log('Click "Tester les formats supportés" to see what your browser supports', 'info');
+    </script>
+</body>
+</html>

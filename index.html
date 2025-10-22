@@ -447,8 +447,8 @@
         // Déterminer le meilleur format audio supporté par le navigateur
         function getSupportedMimeType() {
             const types = [
-                'audio/webm',
                 'audio/webm;codecs=opus',
+                'audio/webm',
                 'audio/ogg;codecs=opus',
                 'audio/mp4',
                 'audio/wav'
@@ -456,9 +456,11 @@
             
             for (let type of types) {
                 if (MediaRecorder.isTypeSupported(type)) {
+                    console.log('Format supporté détecté:', type);
                     return type;
                 }
             }
+            console.warn('Aucun format préféré supporté, utilisation du format par défaut');
             return 'audio/webm'; // Fallback
         }
 
@@ -505,84 +507,191 @@
             let extension = 'webm';
             if (mimeType.includes('wav')) extension = 'wav';
             else if (mimeType.includes('ogg')) extension = 'ogg';
-            else if (mimeType.includes('mp4')) extension = 'm4a';
+            else if (mimeType.includes('mp4') || mimeType.includes('mp4a')) extension = 'm4a';
             else if (mimeType.includes('webm')) extension = 'webm';
             
-            console.log('Sending audio file with extension:', extension);
+            console.log('Blob created:');
+            console.log('  - Size:', blob.size, 'bytes');
+            console.log('  - Type:', blob.type);
+            console.log('  - Extension:', extension);
+            
             sendAudioToServer(blob, extension);
         }
 
         function sendAudioToServer(blob, extension) {
+            // Créer un nouveau blob avec le type MIME explicite
+            let finalBlob = blob;
+            let filename = `recording.${extension}`;
+            
+            // S'assurer que le blob a le bon type MIME
+            if (extension === 'webm' && !blob.type.includes('webm')) {
+                finalBlob = new Blob([blob], { type: 'audio/webm' });
+            } else if (extension === 'ogg' && !blob.type.includes('ogg')) {
+                finalBlob = new Blob([blob], { type: 'audio/ogg' });
+            } else if (extension === 'm4a' && !blob.type.includes('mp4')) {
+                finalBlob = new Blob([blob], { type: 'audio/mp4' });
+            } else if (extension === 'wav' && !blob.type.includes('wav')) {
+                finalBlob = new Blob([blob], { type: 'audio/wav' });
+            }
+            
             const formData = new FormData();
             // Ajouter le fichier avec le bon nom et extension
-            formData.append('audio', blob, `recording.${extension}`);
+            formData.append('audio', finalBlob, filename);
+            
+            console.log('Sending to server:');
+            console.log('  - Filename:', filename);
+            console.log('  - Blob type:', finalBlob.type);
+            console.log('  - Blob size:', finalBlob.size);
         
             fetch('https://homelinks.yoann-oza.me/transcribe', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
+                console.log('Server response status:', response.status);
+                console.log('Server response headers:', response.headers);
+                
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.text().then(text => {
+                        console.error('Server error response:', text);
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+                    });
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('Transcription reçue:', data.transcription);
-                handleTranscription(data.transcription);
+                console.log('Transcription data received:', data);
+                if (data && data.transcription) {
+                    console.log('Transcription text:', data.transcription);
+                    handleTranscription(data.transcription);
+                } else {
+                    console.error('No transcription in response:', data);
+                    alert('Aucune transcription reçue du serveur');
+                }
             })
             .catch(error => {
                 console.error('Erreur lors de la transcription:', error);
-                alert('Erreur lors de la transcription audio. Veuillez réessayer.');
+                alert('Erreur lors de la transcription audio: ' + error.message);
             });
         }
 
         function handleTranscription(transcription) {
+            // Vérifier que la transcription existe et n'est pas vide
+            if (!transcription || transcription.trim() === '') {
+                console.warn('Transcription vide, aucune commande à traiter');
+                alert('Aucun texte détecté. Veuillez réessayer.');
+                return;
+            }
+            
+            console.log('Processing transcription:', transcription);
+            
             let states = get_State();
             let all_states = get_All_State();
+            
+            console.log('Current states:', states);
+            console.log('All states:', all_states);
+            
             fetch('https://homelinks.yoann-oza.me/process', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ text: transcription, state: states, all_state: all_states})
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    text: transcription, 
+                    state: states, 
+                    all_state: all_states
+                })
             })
-            .then(response => response.json())
-            .then(data => executeCommands(data.commands));
+            .then(response => {
+                console.log('Process response status:', response.status);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Process error response:', text);
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Commands received:', data);
+                if (data && data.commands) {
+                    executeCommands(data.commands);
+                } else {
+                    console.error('No commands in response:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors du traitement:', error);
+                alert('Erreur lors du traitement de la commande: ' + error.message);
+            });
         }
 
             function executeCommands(json) {
-                // Parse le JSON en objet JavaScript
-                const etats = JSON.parse(json);
+                try {
+                    console.log('Executing commands with JSON:', json);
+                    
+                    // Vérifier que json n'est pas undefined ou null
+                    if (!json) {
+                        console.error('Commands JSON is empty or undefined');
+                        return;
+                    }
+                    
+                    // Parse le JSON en objet JavaScript
+                    const etats = JSON.parse(json);
+                    console.log('Parsed commands:', etats);
 
-                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
-                if (etats['audio'] == true) {
-                    const audio = new Audio(`https://homelinks.yoann-oza.me/audio`);
-                    audio.play();
+                    // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
+                    if (etats['audio'] == true) {
+                        const audio = new Audio(`https://homelinks.yoann-oza.me/audio`);
+                        audio.play().catch(err => console.error('Error playing audio:', err));
+                    }
+
+                    // Vérifier si l'ID 'alarm' existe et mettre à jour l'alarme
+                    if (etats['alarm']) {
+                        document.getElementById("alarmTime").value = etats['alarm'];
+                        console.log('Alarm set to:', etats['alarm']);
+                    }
+
+                    // Gestion de la porte d'entrée
+                    var wrapper1 = document.getElementById('d1');
+                    if ((etats['door1']==="on" && wrapper1.classList.contains('open')) || 
+                        (etats['door1']==="off" && !wrapper1.classList.contains('open'))){
+                        console.log("Door1 already in correct state");
+                    } else {
+                        wrapper1.classList.toggle('open');
+                        console.log('Door1 toggled to:', etats['door1']);
+                    }
+
+                    // Gestion de la porte de garage
+                    var wrapper2 = document.getElementById('d2');
+                    if ((etats['door2']==="on" && wrapper2.classList.contains('open')) || 
+                        (etats['door2']==="off" && !wrapper2.classList.contains('open'))){
+                        console.log("Door2 already in correct state");
+                    } else {
+                        wrapper2.classList.toggle('open');
+                        console.log('Door2 toggled to:', etats['door2']);
+                    }
+
+                    // Convertir l'objet en un tableau d'entrées [clé, valeur]
+                    const entries = Object.entries(etats);
+
+                    // Parcourir les entrées pour mettre à jour les checkboxes
+                    for (let i = 0; i < entries.length ; i++) {
+                        const [id, checked] = entries[i];
+                        const checkbox = document.getElementById(id);
+                        if (checkbox && checkbox.type === 'checkbox') {
+                            checkbox.checked = checked;
+                            console.log(`Checkbox ${id} set to:`, checked);
+                        }
+                    }
+                    
+                    console.log('Commands executed successfully');
+                    
+                } catch (error) {
+                    console.error('Error executing commands:', error);
+                    alert('Erreur lors de l\'exécution des commandes: ' + error.message);
                 }
-
-                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
-                if (etats['alarm']) {
-                    document.getElementById("alarmTime").value = etats['alarm'];
-                }
-
-                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
-                var wrapper1 = document.getElementById('d1');
-                if ((etats['door1']==="on" && wrapper1.classList.contains('open')) || (etats['door1']==="off" && !wrapper1.classList.contains('open'))){
-                    console.log(" ")
-                }else{
-                    wrapper1.classList.toggle('open');
-                }
-
-                // Vérifier si l'ID 'audio' est true et exécuter des instructions spécifiques
-                var wrapper2 = document.getElementById('d2');
-                if ((etats['door2']==="on" && wrapper2.classList.contains('open')) || (etats['door2']==="off" && !wrapper2.classList.contains('open'))){
-                    console.log(" ")
-                }else{
-                    wrapper2.classList.toggle('open');
-                }
-
-                // Convertir l'objet en un tableau d'entrées [clé, valeur]
+            }
                 const entries = Object.entries(etats);
 
                 // Parcourir les entrées
