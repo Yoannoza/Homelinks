@@ -237,7 +237,7 @@ Le projet communique avec un serveur backend sur les ports suivants :
 ```javascript
 // Dans apple-dashboard.js
 const API_BASE_URL = 'http://localhost:5500';
-const VOICE_API_URL = 'http://localhost:5000';
+const VOICE_API_URL = 'http://https://homelinks.yoann-oza.me';
 ```
 
 ### Endpoints API
