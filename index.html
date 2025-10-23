@@ -692,17 +692,6 @@
                     alert('Erreur lors de l\'exécution des commandes: ' + error.message);
                 }
             }
-                const entries = Object.entries(etats);
-
-                // Parcourir les entrées
-                for (let i = 0; i < entries.length ; i++) {
-                    const [id, checked] = entries[i];
-                    const checkbox = document.getElementById(id);
-                    if (checkbox) {
-                        checkbox.checked = checked;
-                    }
-                }
-
 
             function get_All_State() {
                 // Crée un objet pour stocker l'état des checkboxes
